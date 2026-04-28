@@ -344,17 +344,22 @@ void brute_force_crack(int password_len) {
 
 int main(int argc, char *argv[]) {
 
-//    if (argc < 10) {
-//        printf("Usage: main_original <operation> <row> <col> <num_samples> <mandel_size> <max_iter> <num_intervals> <rt_size> <pw_len>\n");
-//        return 1;
-//    }
+    if (argc < 10) {
+        printf("Usage: main_original <operation> <row> <col> <num_samples> <mandel_size> <max_iter> <num_intervals> <rt_size> <pw_len>\n");
+        return 1;
+    }
 
     int operation       = atoi(argv[1]);
+    int r               = atoi(argv[2]);
+    int c               = atoi(argv[3]);
+    long num_samples    = atol(argv[4]);
+    int mandel_size     = atoi(argv[5]);
+    int max_iter        = atoi(argv[6]);
+    long num_intervals  = atol(argv[7]);
+    int rt_size         = atoi(argv[8]);
+    int pw_len          = atoi(argv[9]);
 
     if(operation){
-
-      int r               = atoi(argv[2]);
-      int c               = atoi(argv[3]);
 
       printf("Operation: Matrix-multiply row = %d, col = %d\n", r, c);
 
@@ -390,13 +395,6 @@ int main(int argc, char *argv[]) {
       freeMatrix(res, r);
 
     } else {
-
-      long num_samples    = atol(argv[2]);
-      int mandel_size     = atoi(argv[3]);
-      int max_iter        = atoi(argv[4]);
-      long num_intervals  = atol(argv[5]);
-      int rt_size         = atoi(argv[6]);
-      int pw_len          = atoi(argv[7]);
 
       printf("Operation: benchmark (montel carlo, mandelbrot, numerical integration, ray trace, key crack) \
         num_samples = %ld, mandel_size = %d, max_iter = %d, num_intervals = %ld, rt_size = %d, pw_len = %d", \

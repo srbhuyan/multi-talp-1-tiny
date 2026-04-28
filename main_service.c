@@ -613,11 +613,16 @@ int main_worker(int argc, char *argv[]) {
     init_global_threadpool();
 
     int operation       = atoi(argv[1]);
+    int r               = atoi(argv[2]);
+    int c               = atoi(argv[3]);
+    long num_samples    = atol(argv[4]);
+    int mandel_size     = atoi(argv[5]);
+    int max_iter        = atoi(argv[6]);
+    long num_intervals  = atol(argv[7]);
+    int rt_size         = atoi(argv[8]);
+    int pw_len          = atoi(argv[9]);
 
     if(operation) {
-
-      int r               = atoi(argv[2]);
-      int c               = atoi(argv[3]);
 
       double ** a   = allocateMatrix(r, c);
       double ** b   = allocateMatrix(r, c);
@@ -673,13 +678,6 @@ int main_worker(int argc, char *argv[]) {
       freeMatrix(res, r);
 
     } else {
-
-      long num_samples    = atol(argv[2]);
-      int mandel_size     = atoi(argv[3]);
-      int max_iter        = atoi(argv[4]);
-      long num_intervals  = atol(argv[5]);
-      int rt_size         = atoi(argv[6]);
-      int pw_len          = atoi(argv[7]);
 
       monte_carlo_pi(num_samples);
       mandelbrot(mandel_size, mandel_size, max_iter);
