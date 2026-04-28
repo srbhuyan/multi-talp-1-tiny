@@ -6,6 +6,58 @@
 #include <time.h>
 
 /*
+ * Matrix multiply
+ */
+
+void mult(double ** a, double ** b, double ** res, int r, int c){
+  for(int i=0;i<r;i++){
+    for(int j=0;j<c;j++){
+      for(int k=0;k<r;k++){
+        res[i][j] += a[i][k] * b[k][j];
+      }
+    }
+  }
+}
+
+void print(double ** a, int r, int c){
+
+  printf("Printing first 5 rows and 5 columns");
+  int r1 = r;
+  int c1 = c;
+
+  r = r > 5 ? 5 : r;
+  c = c > 5 ? 5 : c;
+
+  printf("\n");
+  for(int row=0;row<r;row++){
+    for(int col=0;col<c;col++){
+      printf("%.2lf ", a[row][col]);
+    }
+    printf("\n");
+  }
+  if(r1 > 5 || c1 > 5) {
+    printf("... [%d x %d]\n", r1, c1);
+  }
+
+  printf("\n");
+}
+
+double ** allocateMatrix(int r, int c){
+  double ** m = (double **)malloc(r * sizeof(double *));
+  for(int i=0;i<r;i++){
+    m[i] = (double *)malloc(c * sizeof(double));
+  }
+  return m;
+}
+
+void freeMatrix(double ** m, int r){
+  for(int i=0;i<r;i++){
+    free(m[i]);
+  }
+  free(m);
+}
+
+/*
  * Monte Carlo estimation of Pi (serial version).
  *
  * Throw N random points into the unit square [0,1)x[0,1).
@@ -292,23 +344,71 @@ void brute_force_crack(int password_len) {
 
 int main(int argc, char *argv[]) {
 
-    if (argc < 7) {
-        printf("Usage: main_original <num_samples> <mandel_size> <max_iter> <num_intervals> <rt_size> <pw_len>\n");
-        return 1;
+//    if (argc < 10) {
+//        printf("Usage: main_original <operation> <row> <col> <num_samples> <mandel_size> <max_iter> <num_intervals> <rt_size> <pw_len>\n");
+//        return 1;
+//    }
+
+    int operation       = atoi(argv[1]);
+
+    if(operation){
+
+      int r               = atoi(argv[2]);
+      int c               = atoi(argv[3]);
+
+      printf("Operation: Matrix-multiply row = %d, col = %d\n", r, c);
+
+      double ** a   = allocateMatrix(r, c);
+      double ** b   = allocateMatrix(r, c);
+      double ** res = allocateMatrix(r, c);
+
+      double result    = 0.0;
+
+      printf("Input: row = %d, col = %d\n", r, c);
+
+      // init data
+      for(int i=0;i<r;i++){
+        for(int j=0;j<c;j++){
+          a[i][j] = (double)(i + j);
+          b[i][j] = (double)(i + j);
+          res[i][j] = 0;
+        }
+      }
+
+      printf("Matrix a\n");
+      print(a, r, c);
+      printf("Matrix b\n");
+      print(b, r, c);
+
+      mult(a, b, res, r, c);
+
+      printf("Matrix res\n");
+      print(res, r, c);
+
+      freeMatrix(a, r);
+      freeMatrix(b, r);
+      freeMatrix(res, r);
+
+    } else {
+
+      long num_samples    = atol(argv[2]);
+      int mandel_size     = atoi(argv[3]);
+      int max_iter        = atoi(argv[4]);
+      long num_intervals  = atol(argv[5]);
+      int rt_size         = atoi(argv[6]);
+      int pw_len          = atoi(argv[7]);
+
+      printf("Operation: benchmark (montel carlo, mandelbrot, numerical integration, ray trace, key crack) \
+        num_samples = %ld, mandel_size = %d, max_iter = %d, num_intervals = %ld, rt_size = %d, pw_len = %d", \
+        num_samples, mandel_size, max_iter, num_intervals, rt_size, pw_len);
+
+      monte_carlo_pi(num_samples);
+      mandelbrot(mandel_size, mandel_size, max_iter);
+      numerical_integration(num_intervals, 0.0, 10.0);
+      ray_trace(rt_size, rt_size);
+      brute_force_crack(pw_len);
+
     }
-
-    long num_samples    = atol(argv[1]);
-    int mandel_size     = atoi(argv[2]);
-    int max_iter        = atoi(argv[3]);
-    long num_intervals  = atol(argv[4]);
-    int rt_size         = atoi(argv[5]);
-    int pw_len          = atoi(argv[6]);
-
-    monte_carlo_pi(num_samples);
-    mandelbrot(mandel_size, mandel_size, max_iter);
-    numerical_integration(num_intervals, 0.0, 10.0);
-    ray_trace(rt_size, rt_size);
-    brute_force_crack(pw_len);
 
     return 0;
 }
