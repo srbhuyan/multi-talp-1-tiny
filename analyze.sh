@@ -408,8 +408,12 @@ EOF
 
 echo "load response = $load_response"
 
-input_var_names=(num_samples mandel_size max_iter num_intervals rt_size pw_len)
-input_var_values=(40000000 4000 4000 40000000 2000 6)
+#input_var_names=(num_samples mandel_size max_iter num_intervals rt_size pw_len)
+#input_var_values=(40000000 4000 4000 40000000 2000 6)
+
+input_var_names=(operation row col num_samples mandel_size max_iter num_intervals rt_size pw_len)
+input_var_values=(1 1600 1600 40000000 4000 4000 40000000 2000 6)
+
 
 # lib run
 for i in ${core[@]}
