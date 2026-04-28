@@ -112,6 +112,11 @@ analysis_file="${data_id}.analysis.json"
 parallel_plugin_so=MyRewriter.so
 parallel_plugin_name=rew
 
+echo "========================================================================="
+echo "data_id = $data_id"
+echo "========================================================================="
+
+
 echo "cleaning up"
 
 # cleanup
@@ -401,6 +406,7 @@ poll_api_until_condition() {
     done
 }
 
+if [ "$data_id" == "xCtVR3p7" ]; then
 # lib load
 load_response=$(curl -s -X POST -H "Content-Type: application/json" -d @- $thmgr_api/load <<EOF
 {
@@ -410,6 +416,7 @@ EOF
 )
 
 echo "load response = $load_response"
+fi
 
 #input_var_names=(num_samples mandel_size max_iter num_intervals rt_size pw_len)
 #input_var_values=(40000000 4000 4000 40000000 2000 6)
