@@ -215,8 +215,10 @@ cov-callgraph-generator --cov-file "$klee_dir/test000001-replay/test000001.cov" 
 
 # HACK -END
 
+if [ "$data_id" == "xCtVR3p7" ]; then
 # make - serial
 make -f Makefile-serial
+fi
 
 # make a copy of original main file
 main_file_extn="${main_file##*.}"
@@ -228,11 +230,13 @@ main_file_orig="$main_file_noextn"_original."$main_file_extn"
 algo_orig="$algo"_original
 #mv $algo $algo_orig
 
+if [ "$data_id" == "xCtVR3p7" ]; then
 # make - parallel
 make -f Makefile-parallel
 
 # make - thread manager service
 make -f Makefile-thmgr repo_name=$repo_name lib_location=$thmgr_lib_dir
+fi
 
 # serial run
 
