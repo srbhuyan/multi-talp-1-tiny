@@ -183,6 +183,7 @@ else
   echo "TALP coverage generation failed with exit code $?"
 fi
 
+cp main_original.c main_original.c.klee
 mv main_original.bak.c main_original.c
 
 for dir in klee-out-*-replay-*; do
