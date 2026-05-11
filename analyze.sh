@@ -171,6 +171,7 @@ json_output=$(jq -n \
 echo "$json_output" > compile_commands.json
 echo "JSON data written to compile_commands.json"
 
+if [ "$data_id" == "xCtVR3p7" ]; then
 # TALP coverage generation - start
 echo "TALP coverage generation"
 
@@ -183,6 +184,7 @@ else
   echo "TALP coverage generation failed with exit code $?"
 fi
 
+# Keeping a copy of the KLEE instrumented file for debugging
 cp main_original.c main_original.c.klee
 mv main_original.bak.c main_original.c
 
@@ -195,7 +197,9 @@ done
 echo "$klee_dir"
 
 cov-callgraph-generator --cov-file "$klee_dir/test000001-replay/test000001.cov" --output-file test000001.covgraph.json -p .
+cov-callgraph-generator --cov-file "$klee_dir/test000002-replay/test000001.cov" --output-file test000001.covgraph.json -p .
 # TALP coverage generation - end
+fi
 
 # Generate parallel analysis
 #/usr/bin/clang-18 -g -emit-llvm -S -o main_original.ll main_original.c
